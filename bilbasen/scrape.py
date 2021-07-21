@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from dataclasses import dataclass
+import os
 import tqdm
 import numpy as np
 import pandas as pd
@@ -59,7 +60,7 @@ def parse_soup(soup):
     # Loop over the cars in the page
     for div in soup.select("div[class*=bb-listing-clickable]"):
         headline    = None
-        description = None
+        #description = None
         odometer    = None
         year        = None
         price       = None
@@ -115,7 +116,7 @@ def get_number_of_pages(soup):
 
     return last_page_number
 
-def driver(brand, model, timestamp):
+def driver(brand, model, timestamp, output_dir):
     # Configure webdriver
     options = Options()
     options.add_argument("--headless")
@@ -160,6 +161,12 @@ def driver(brand, model, timestamp):
     print(df.head())
     print(f'Number of cars: {df.shape[0]}')
 
+    # Make sure output dir exists
+    os.makedirs(output_dir, exist_ok=True)
+    file_name = f'data_{brand}_{model}_{timestamp}.parquet'
+    output_path = os.path.join(output_dir, file_name)
+    print(f"Writing data to {output_path}")
+    
     # Save the file
-    df.to_parquet(f'data/data_{brand}_{model}_{timestamp}.parquet')
+    df.to_parquet(output_path)
 
