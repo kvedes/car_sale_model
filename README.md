@@ -46,6 +46,7 @@ Scrape data for Opel Astra
 ```
 bilbasen opel astra
 ```
+Data will be saved to `~/data` as this is the default. 
 
 Scrape data for a Peugeot 508 saving to the path `~/work/cars`
 ```
